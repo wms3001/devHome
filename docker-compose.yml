@@ -1,0 +1,32 @@
+version: "3.9"
+name: "GLKJDevHome"
+services:
+  mysql8:
+    image: mysql:${MYSQL_VERSION}
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+    ports:
+      - 33060:3306  
+    volumes:
+      - my8Data:/var/lib/mysql  
+    networks:
+      - devNet  
+  mysql5:
+     image: mysql:${MYSQL_VERSION_OLD}
+     restart: always
+     environment:
+       MYSQL_ROOT_PASSWORD: 123456 
+     ports:
+      - 33061:3306 
+     volumes:
+      - my5Data:/var/lib/mysql      
+     networks:
+      - devNet   
+networks:
+  devNet:
+    driver: bridge  
+volumes:
+  my8Data:
+  my5Data:
+
