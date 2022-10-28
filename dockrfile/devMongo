@@ -1,0 +1,10 @@
+FROM mongo:latest
+ENV MONGO_DB_ADMIN_USERNAME=admin
+ENV MONGO_DB_ADMIN_PASSWORD=123456
+ENV MONGO_DB=dev
+RUN mongosh
+RUN use admin
+RUN db.auth("root","123456")
+RUN use dev
+RUN db.test.insert({"name":1})
+RUN db.createUser({user:"admin",pwd:"123456",roles:[{role:"readWrite",db:"dev"}]})

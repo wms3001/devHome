@@ -10,6 +10,7 @@ services:
       - 33060:3306  
     volumes:
       - my8Data:/var/lib/mysql  
+      - ./conf/my8.cnf:/etc/my.cnf
     networks:
       - devNet  
   mysql5:
@@ -20,13 +21,34 @@ services:
      ports:
       - 33061:3306 
      volumes:
-      - my5Data:/var/lib/mysql      
+      - my5Data:/var/lib/mysql 
+      - ./conf/my5.cnf:/etc/my.cnf    
      networks:
-      - devNet   
+      - devNet  
+  mongo:
+    image: mongo:${MONGO_VERSION}
+    restart: always
+    volumes:
+      - mongoData:/data/db
+    ports:
+      - 27018:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: 123456    
+  mongo-express:
+    image: mongo-express:${MONGO_EXPRESS_VERSION}
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: 123456
+      ME_CONFIG_MONGODB_URL: mongodb://root:123456@mongo:27017/     
 networks:
   devNet:
     driver: bridge  
 volumes:
   my8Data:
   my5Data:
+  mongoData:
 
