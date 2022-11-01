@@ -1,0 +1,42 @@
+FROM php:5.5-fpm
+RUN apt-get update && apt-get install -y \
+		libfreetype6-dev \
+		libjpeg62-turbo-dev \
+		libpng-dev \
+		libbz2-dev
+RUN docker-php-source extract \
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
+	&& docker-php-ext-install -j$(nproc) gd bcmath bz2
+# 	calendar enchant
+RUN apt-get install -y --no-install-recommends libenchant-dev
+# RUN docker-php-ext-install  ev
+RUN pecl install ev \
+	&& docker-php-ext-enable ev  
+RUN docker-php-ext-install sockets	
+RUN apt-get install -y libevent-dev libssl-dev
+RUN pecl install event \
+	&& docker-php-ext-enable event
+RUN docker-php-ext-install 	exif
+RUN docker-php-ext-install gettext
+RUN apt-get install -y libgmp-dev libgmp3-dev 
+RUN ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/include/gmp.h
+RUN docker-php-ext-install gmp
+RUN apt-get install -y --no-install-recommends libc-client-dev libkrb5-dev
+RUN docker-php-ext-configure imap --with-kerberos --with-imap-ssl
+RUN docker-php-ext-install imap
+RUN apt-get install -y --no-install-recommends firebird-dev
+RUN docker-php-ext-install interbase
+RUN apt-get install -y --no-install-recommends libicu-dev
+RUN docker-php-ext-install intl
+RUN apt-get install -y --no-install-recommends libldap2-dev
+RUN docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu
+RUN docker-php-ext-install ldap
+RUN apt-get install -y --no-install-recommends libmcrypt-dev
+RUN docker-php-ext-install mcrypt
+RUN apt-get install -y graphicsmagick
+RUN docker-php-ext-configure gmagick --with-quantum-depth=8 --enable-static
+RUN pecl install channel://pecl.php.net/gmagick-1.1.7RC3 \
+&& docker-php-ext-enable gmagick
+#        mysql mysqli oci8 odbc opcache pcntl pdo pdo_dblib pdo_firebird pdo_mysql pdo_oci pdo_odbc pdo_pgsql pdo_sqlite pgsql phar posix pspell readline recode reflection session shmop simplexml snmp soap sockets spl standard sybase_ct sysvmsg sysvsem sysvshm tidy tokenizer wddx xml xmlreader xmlrpc xmlwriter xsl zip \
+
+RUN docker-php-source delete

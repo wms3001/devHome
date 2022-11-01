@@ -99,9 +99,30 @@ services:
         ACCEPT_EULA: Y
         MSSQL_SA_PASSWORD: Glkj2022!@#
     ports:
-      - 1433:1433
+      - 1401:1433
     volumes:
       - mssqlData:/var/opt/mssql
+  php-fpm5:
+    image: php:${PHPFPM5_VERSION}  
+    restart: always
+    networks: 
+      - devNet
+    ports:
+      - 9005:9000    
+  php-fpm7:
+    image: php:${PHPFPM7_VERSION}  
+    restart: always
+    networks: 
+      - devNet
+    ports:
+      - 9007:9000
+  php-fpm8:
+    image: php:${PHPFPM8_VERSION}  
+    restart: always
+    networks: 
+      - devNet
+    ports:
+      - 9008:9000    
 networks:
   devNet:
     driver: bridge  
