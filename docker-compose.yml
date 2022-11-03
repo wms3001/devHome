@@ -103,7 +103,8 @@ services:
     volumes:
       - mssqlData:/var/opt/mssql
   php-fpm5:
-    image: php:${PHPFPM5_VERSION}  
+    # image: php:${PHPFPM5_VERSION}  
+    image: phpfpm5
     restart: always
     networks: 
       - devNet
