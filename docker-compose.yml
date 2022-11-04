@@ -109,7 +109,19 @@ services:
     networks: 
       - devNet
     ports:
-      - 9005:9000    
+      - 9005:9000  
+  php-cli5:
+    image: phpcli5
+    restart: always
+    networks: 
+      - devNet
+    stdin_open: true # -i interactive
+    tty: true # -t tty
+    privileged: true
+    entrypoint: ["sh"] # 执行 sh
+    volumes:
+      - appData:/data   
+      # - ./cron/phpcli5:/etc/crontab        
   php-fpm7:
     image: php:${PHPFPM7_VERSION}  
     restart: always
@@ -117,6 +129,18 @@ services:
       - devNet
     ports:
       - 9007:9000
+  php-cli7:
+    image: php:${PHPCLI7_VERSION}
+    restart: always
+    networks: 
+      - devNet
+    stdin_open: true # -i interactive
+    tty: true # -t tty
+    privileged: true
+    entrypoint: ["sh"] # 执行 sh
+    volumes:
+      - appData:/data   
+      # - ./cron/phpcli7:/etc/crontab  
   php-fpm8:
     image: php:${PHPFPM8_VERSION}  
     restart: always
@@ -135,3 +159,4 @@ volumes:
   postgresData:
   redisData:
   mssqlData:
+  appData:
