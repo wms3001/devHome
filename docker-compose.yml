@@ -9,7 +9,7 @@ services:
     ports:
       - 33060:3306  
     volumes:
-      - my8Data:/var/lib/mysql  
+      - ./data/my8:/var/lib/mysql  
       - ./conf/my8.cnf:/etc/my.cnf
     networks:
       - devNet  
@@ -21,7 +21,7 @@ services:
      ports:
       - 33061:3306 
      volumes:
-      - my5Data:/var/lib/mysql 
+      - ./data/my5:/var/lib/mysql 
       - ./conf/my5.cnf:/etc/my.cnf    
      networks:
       - devNet  
@@ -29,7 +29,7 @@ services:
     image: mongo:${MONGO_VERSION}
     restart: always
     volumes:
-      - mongoData:/data/db
+      - ./data/mongo:/data/db
       - ./conf/mongod.conf:/data/configdb/mongod.conf
     ports:
       - 27017:27017
@@ -61,7 +61,7 @@ services:
     networks:
       - devNet  
     volumes:
-      - redisData:/data   
+      - ./data/redis:/data   
       - ./conf/redis.conf:/etc/redis.conf  
   rabbitmq:
     image: rabbitmq:${RABBITMQ_VERSION}     
@@ -70,7 +70,7 @@ services:
       - 15672:15672
       - 5672:5672
     volumes:
-      -  rabbitmqData:/var/lib/rabbitmq
+      -  ./data/rabbitmq:/var/lib/rabbitmq
     environment:
       RABBITMQ_DEFAULT_USER: root  
       RABBITMQ_DEFAULT_PASS: 123456
@@ -82,12 +82,13 @@ services:
     environment:
         POSTGRES_USER: root
         POSTGRES_PASSWORD: 123456
+        PGDATA: /var/lib/postgresql/data/pgdata
     ports:
       - 5432:5432
     command:
       postgres -c config_file=/var/lib/postgresql/data/postgresql.conf  
     volumes:
-      - postgresData:/var/lib/postgresql/data   
+      - ./data/postgres:/var/lib/postgresql/data   
       - ./conf/pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
       - ./conf/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
   mssql:
@@ -101,7 +102,7 @@ services:
     ports:
       - 1401:1433
     volumes:
-      - mssqlData:/var/opt/mssql
+      - ./data/mssql:/var/opt/mssql
   php-fpm5:
     # image: php:${PHPFPM5_VERSION}  
     image: phpfpm5
@@ -120,7 +121,7 @@ services:
     privileged: true
     entrypoint: ["sh"] # 执行 sh
     volumes:
-      - appData:/data   
+      - ./app/php5:/data   
       # - ./cron/phpcli5:/etc/crontab        
   php-fpm7:
     image: php:${PHPFPM7_VERSION}  
@@ -139,7 +140,7 @@ services:
     privileged: true
     entrypoint: ["sh"] # 执行 sh
     volumes:
-      - appData:/data   
+      - ./app/php7:/data   
       # - ./cron/phpcli7:/etc/crontab  
   php-fpm8:
     image: php:${PHPFPM8_VERSION}  
@@ -151,12 +152,12 @@ services:
 networks:
   devNet:
     driver: bridge  
-volumes:
-  my8Data:
-  my5Data:
-  mongoData:
-  rabbitmqData:
-  postgresData:
-  redisData:
-  mssqlData:
-  appData:
+# volumes:
+#   my8Data:
+#   my5Data:
+#   mongoData:
+#   rabbitmqData:
+#   postgresData:
+#   redisData:
+#   mssqlData:
+#   appData:
