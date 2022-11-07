@@ -159,6 +159,12 @@ volumes:
     - ./conf/pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
     - ./conf/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
 ```
+第一次启动需要先注释,因为数据库需要初始化，挂载进去文件存在会报错.
+```
+- ./conf/pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
+    - ./conf/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
+```
+
 ### 7. mssql
 ```
 image: mcr.microsoft.com/mssql/server:${MSSQL_VERSION}   

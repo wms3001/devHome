@@ -9,7 +9,7 @@ services:
     ports:
       - 33060:3306  
     volumes:
-      - ./data/my8:/var/lib/mysql  
+      - my8Data:/var/lib/mysql  
       - ./conf/my8.cnf:/etc/my.cnf
     networks:
       - devNet  
@@ -21,7 +21,7 @@ services:
      ports:
       - 33061:3306 
      volumes:
-      - ./data/my5:/var/lib/mysql 
+      - my5Data:/var/lib/mysql 
       - ./conf/my5.cnf:/etc/my.cnf    
      networks:
       - devNet  
@@ -29,7 +29,7 @@ services:
     image: mongo:${MONGO_VERSION}
     restart: always
     volumes:
-      - ./data/mongo:/data/db
+      - mongoData:/data/db
       - ./conf/mongod.conf:/data/configdb/mongod.conf
     ports:
       - 27017:27017
@@ -61,7 +61,7 @@ services:
     networks:
       - devNet  
     volumes:
-      - ./data/redis:/data   
+      - redisData:/data   
       - ./conf/redis.conf:/etc/redis.conf  
   rabbitmq:
     image: rabbitmq:${RABBITMQ_VERSION}     
@@ -70,7 +70,7 @@ services:
       - 15672:15672
       - 5672:5672
     volumes:
-      -  ./data/rabbitmq:/var/lib/rabbitmq
+      - rabbitmqData:/var/lib/rabbitmq
     environment:
       RABBITMQ_DEFAULT_USER: root  
       RABBITMQ_DEFAULT_PASS: 123456
@@ -82,13 +82,13 @@ services:
     environment:
         POSTGRES_USER: root
         POSTGRES_PASSWORD: 123456
-        PGDATA: /var/lib/postgresql/data/pgdata
+        # PGDATA: /var/lib/postgresql/data/pgdata
     ports:
       - 5432:5432
     command:
       postgres -c config_file=/var/lib/postgresql/data/postgresql.conf  
     volumes:
-      - ./data/postgres:/var/lib/postgresql/data   
+      - postgresData:/var/lib/postgresql/data   
       - ./conf/pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
       - ./conf/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
   mssql:
@@ -102,7 +102,7 @@ services:
     ports:
       - 1401:1433
     volumes:
-      - ./data/mssql:/var/opt/mssql
+      - mssqlData:/var/opt/mssql
   php-fpm5:
     # image: php:${PHPFPM5_VERSION}  
     image: phpfpm5
@@ -152,12 +152,12 @@ services:
 networks:
   devNet:
     driver: bridge  
-# volumes:
-#   my8Data:
-#   my5Data:
-#   mongoData:
-#   rabbitmqData:
-#   postgresData:
-#   redisData:
-#   mssqlData:
-#   appData:
+volumes:
+  my8Data:
+  my5Data:
+  mongoData:
+  rabbitmqData:
+  postgresData:
+  redisData:
+  mssqlData:
+  # appData:
