@@ -209,3 +209,17 @@ networks:
 ports:
     - 9005:9000 
 ```
+### 9. phpcli5
+```
+image: phpcli5
+    restart: always
+    networks: 
+      - devNet
+    stdin_open: true # -i interactive
+    tty: true # -t tty
+    privileged: true
+    entrypoint: ["sh"] # 执行 sh
+    volumes:
+      - ./app/php5:/data   
+      # - ./cron/phpcli5:/etc/crontab  
+```

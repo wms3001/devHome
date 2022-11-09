@@ -124,14 +124,14 @@ services:
       - ./app/php5:/data   
       # - ./cron/phpcli5:/etc/crontab        
   php-fpm7:
-    image: php:${PHPFPM7_VERSION}  
+    image: phpfpm7  
     restart: always
     networks: 
       - devNet
     ports:
       - 9007:9000
   php-cli7:
-    image: php:${PHPCLI7_VERSION}
+    image: phpcli7
     restart: always
     networks: 
       - devNet
@@ -149,6 +149,17 @@ services:
       - devNet
     ports:
       - 9008:9000    
+  nginx:
+    image: nginx:${NGINX_VERSION}  
+    restart: always
+    networks: 
+      - devNet
+    ports:
+      - 8080:80
+    volumes:
+      - ./app:/usr/share/nginx/html    
+      - ./conf/nginx.conf:/etc/nginx/nginx.conf
+      - ./conf/conf.d:/etc/nginx/conf.d 
 networks:
   devNet:
     driver: bridge  
