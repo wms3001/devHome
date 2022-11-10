@@ -10,8 +10,11 @@
 > * postgres
 > * mssql
 > * php-fpm5、php-fpm7、php-fpm8
+> * php-cli5、php-cli7、php-cli8
+> * nginx
+> * java
 ------
-
+用到的[dockerfile](https://github.com/wms3001/dockerFile.git)文件。
 ## 使用的docker命令
 ```
 启动所有容器
@@ -222,4 +225,75 @@ image: phpcli5
     volumes:
       - ./app/php5:/data   
       # - ./cron/phpcli5:/etc/crontab  
+```
+### 10. phpfpm7
+```
+image: phpfpm7  
+restart: always
+networks: 
+    - devNet
+ports:
+    - 9007:9000
+```
+### 11. phpcli7
+```
+image: phpcli7
+restart: always
+networks: 
+    - devNet
+stdin_open: true # -i interactive
+tty: true # -t tty
+privileged: true
+entrypoint: ["sh"] # 执行 sh
+volumes:
+    - ./app/php7:/data   
+    # - ./cron/phpcli7:/etc/crontab 
+```
+### 12. phpfpm8
+```
+image: phpfpm8  
+restart: always
+networks: 
+    - devNet
+ports:
+    - 9008:9000 
+```
+### 13. phpcli8
+```
+image: phpcli8
+restart: always
+networks: 
+    - devNet
+stdin_open: true # -i interactive
+tty: true # -t tty
+privileged: true
+entrypoint: ["sh"] # 执行 sh
+volumes:
+    - ./app/php8:/data   
+    # - ./cron/phpcli7:/etc/crontab   
+```
+### 14. nginx
+```
+image: nginx:${NGINX_VERSION}  
+restart: always
+networks: 
+    - devNet
+ports:
+    - 8080:80
+volumes:
+    - ./app:/usr/share/nginx/html    
+    - ./conf/nginx.conf:/etc/nginx/ngin
+```
+### 15. java
+oracle/jdk:19下载[dockerfile](https://github.com/oracle/docker-images/tree/main/OracleJava) 自己编译
+```
+image: oracle/jdk:19
+command: "java -jar /app/package.jar"
+restart: always
+networks: 
+    - devNet
+ports:
+    - 18889:18888  
+volumes:
+      - ./app/java:/app  
 ```

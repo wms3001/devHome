@@ -111,6 +111,8 @@ services:
       - devNet
     ports:
       - 9005:9000  
+    volumes:
+      - ./app:/usr/share/nginx/html    
   php-cli5:
     image: phpcli5
     restart: always
@@ -143,12 +145,24 @@ services:
       - ./app/php7:/data   
       # - ./cron/phpcli7:/etc/crontab  
   php-fpm8:
-    image: php:${PHPFPM8_VERSION}  
+    image: phpfpm8  
     restart: always
     networks: 
       - devNet
     ports:
-      - 9008:9000    
+      - 9008:9000   
+  php-cli8:
+    image: phpcli8
+    restart: always
+    networks: 
+      - devNet
+    stdin_open: true # -i interactive
+    tty: true # -t tty
+    privileged: true
+    entrypoint: ["sh"] # 执行 sh
+    volumes:
+      - ./app/php8:/data   
+      # - ./cron/phpcli7:/etc/crontab       
   nginx:
     image: nginx:${NGINX_VERSION}  
     restart: always
@@ -156,10 +170,21 @@ services:
       - devNet
     ports:
       - 8080:80
+      - 8082:81
     volumes:
       - ./app:/usr/share/nginx/html    
       - ./conf/nginx.conf:/etc/nginx/nginx.conf
       - ./conf/conf.d:/etc/nginx/conf.d 
+  java:
+    image: oracle/jdk:19
+    command: "java -jar /app/package.jar"
+    restart: always
+    networks: 
+      - devNet
+    ports:
+      - 18889:18888  
+    volumes:
+      - ./app/java:/app    
 networks:
   devNet:
     driver: bridge  
