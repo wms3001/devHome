@@ -183,6 +183,8 @@ volumes:
     - mssqlData:/var/opt/mssql
 ```
 ### 8. php-fpm5
+自己编译镜像
+或者下载  docker pull wms3001/phpfpm5
 ```
 使用官方镜像
 image: php:${PHPFPM5_VERSION} 
@@ -213,6 +215,8 @@ ports:
     - 9005:9000 
 ```
 ### 9. phpcli5
+自己编译镜像
+或者下载  docker pull wms3001/phpcli5
 ```
 image: phpcli5
     restart: always
@@ -227,6 +231,8 @@ image: phpcli5
       # - ./cron/phpcli5:/etc/crontab  
 ```
 ### 10. phpfpm7
+自己编译镜像
+或者下载  docker pull wms3001/phpfpm7
 ```
 image: phpfpm7  
 restart: always
@@ -236,6 +242,8 @@ ports:
     - 9007:9000
 ```
 ### 11. phpcli7
+自己编译镜像
+或者下载  docker pull wms3001/phpcli7
 ```
 image: phpcli7
 restart: always
@@ -250,6 +258,8 @@ volumes:
     # - ./cron/phpcli7:/etc/crontab 
 ```
 ### 12. phpfpm8
+自己编译镜像
+或者下载  docker pull wms3001/phpfpm8
 ```
 image: phpfpm8  
 restart: always
@@ -259,6 +269,8 @@ ports:
     - 9008:9000 
 ```
 ### 13. phpcli8
+自己编译镜像
+或者下载  docker pull wms3001/phpcli8
 ```
 image: phpcli8
 restart: always
@@ -285,7 +297,8 @@ volumes:
     - ./conf/nginx.conf:/etc/nginx/ngin
 ```
 ### 15. java
-oracle/jdk:19下载[dockerfile](https://github.com/oracle/docker-images/tree/main/OracleJava) 自己编译
+自己编译镜像
+或者下载  docker pull wms3001/java19
 ```
 image: oracle/jdk:19
 command: "java -jar /app/package.jar"

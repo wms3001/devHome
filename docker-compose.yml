@@ -49,6 +49,8 @@ services:
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: 123456
       ME_CONFIG_MONGODB_URL: mongodb://root:123456@mongo:27017/  
+    depends_on:
+      - mongo  
     networks:
       - devNet   
   redis:
@@ -182,9 +184,34 @@ services:
     networks: 
       - devNet
     ports:
-      - 18889:18888  
+      - 8085:8080  
     volumes:
-      - ./app/java:/app    
+      - ./app/java:/app   
+  node:
+    image: node:${NODE_VERSION}
+    user: node
+    working_dir: /home/node/app
+    restart: always
+    networks: 
+      - devNet
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./app/node:/home/node/app
+    ports:
+      - 8086:3000
+    command: npm start 
+  golang:
+    image: golang:${GOLANG_VERSION}
+    working_dir: /usr/src/app
+    restart: always
+    networks: 
+      - devNet 
+    volumes:
+      - ./app/golang/app:/usr/src/app
+    ports:
+      - 8087:8080 
+    command: /bin/bash -c "go mod tidy && go run main.go"     
 networks:
   devNet:
     driver: bridge  
